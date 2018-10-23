@@ -128,7 +128,7 @@ with tf.Session(config=gpuConfig) as sess:
         os.makedirs(dir_name)
 
     i = 0
-    mb_size = 128
+    mb_size = 32
     Z_dim = 100
 
     z_show = sample_Z(16, Z_dim)
