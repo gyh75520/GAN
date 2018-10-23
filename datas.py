@@ -30,10 +30,10 @@ def get_data_micro():
     return datas
 
 
-def get_batch(batch_size):
+def get_batch(batch_size, resize=False):
     datas = get_data_micro()
     datas_batch = random.sample(datas, batch_size)
-    imgs_batch = [get_img(data) for data in datas_batch]
+    imgs_batch = [get_img(data, resize) for data in datas_batch]
 
     # imgs_batch = random.sample(imgs, batch_size)
     return imgs_batch

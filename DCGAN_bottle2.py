@@ -10,7 +10,6 @@ Use LeakyReLU activation in the discriminator for all layers.
 '''
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import os
 import matplotlib.pyplot as plt
@@ -116,8 +115,6 @@ print("theta_D_new   ", theta_D_new)
 
 D_optimizer = tf.train.AdamOptimizer(learning_rate=2e-4).minimize(D_loss, var_list=theta_D)  # note:only update D gradient, use var_list
 G_optimizer = tf.train.AdamOptimizer(learning_rate=2e-4).minimize(G_loss, var_list=theta_G)  # note:only update G gradient, use var_list
-
-mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
 
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
