@@ -28,7 +28,7 @@ def sample_Z(m, n):
     return np.random.uniform(-1., 1., size=[m, n])
 
 
-X = tf.placeholder(tf.float32, [None, 64, 64, 3])
+X = tf.placeholder(tf.float32, [None, 480, 480, 3])
 Z = tf.placeholder(tf.float32, [None, 100])
 
 w_init = tf.random_normal_initializer(mean=0, stddev=0.02)
@@ -40,17 +40,17 @@ def generator(is_training=True):
         # z = [batch,62]
         # G_dense1 = slim.fully_connected(Z, 4 * 4 * 1024, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
         # G_dense1 = [batch,1024]
-        G_dense2 = slim.fully_connected(Z, 1024 * 4 * 4, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
-        # G_dense1 = [batch,1024 * 4 * 4]
-        G_dense2_flatt = tf.reshape(G_dense2, [-1, 4, 4, 1024])
+        G_dense2 = slim.fully_connected(Z, 1024 * 30 * 30, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
+        # G_dense1 = [batch,1024 * 30 * 30]
+        G_dense2_flatt = tf.reshape(G_dense2, [-1, 30, 30, 1024])
         G_deconv1 = slim.conv2d_transpose(G_dense2_flatt, 512, [3, 3], 2, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
-        # G_deconv1 = [batch,8,8,512]
+        # G_deconv1 = [batch,60,60,512]
         G_deconv2 = slim.conv2d_transpose(G_deconv1, 256, [3, 3], 2, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
-        # G_deconv1 = [batch,16,16,256]
+        # G_deconv1 = [batch,120,120,256]
         G_deconv3 = slim.conv2d_transpose(G_deconv2, 128, [3, 3], 2, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
-        # G_deconv1 = [batch,32,32,128]
+        # G_deconv1 = [batch,240,240,128]
         G_deconv4 = slim.conv2d_transpose(G_deconv3, 3, [3, 3], 2, activation_fn=tf.nn.tanh, weights_initializer=w_init, biases_initializer=b_init)
-        # G_deconv2 = [batch,64,64,3]
+        # G_deconv2 = [batch,480,480,3]
         print('G_deconv4 ', G_deconv4)
         G_prob = G_deconv4
         return G_prob
@@ -144,7 +144,7 @@ with tf.Session(config=gpuConfig) as sess:
             i += 1
             plt.close(fig)
 
-        X_mb = get_batch(mb_size, resize=True)
+        X_mb = get_batch(mb_size)
         # X_mb = np.reshape(X_mb, [-1, 28, 28, 1])
         _, D_loss_curr = sess.run([D_optimizer, D_loss], feed_dict={X: X_mb, Z: sample_Z(mb_size, Z_dim)})
         _, G_loss_curr = sess.run([G_optimizer, G_loss], feed_dict={Z: sample_Z(mb_size, Z_dim)})

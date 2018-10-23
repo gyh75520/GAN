@@ -8,14 +8,15 @@ import random
 # print(data)
 
 
-def get_img(img_path):
+def get_img(img_path, resize=False):
     image = scipy.misc.imread(img_path).astype(np.float32)
     h, w = image.shape[:2]
     w_s = int((w - h) / 2)
     w_e = int(w_s + h)
     # print(w_s, w_e)
     cropped_img = image[:, w_s:w_e]
-    cropped_img = scipy.misc.imresize(cropped_img, [64, 64])
+    if resize:
+        cropped_img = scipy.misc.imresize(cropped_img, [64, 64])
     return np.array(cropped_img) / 255
 
 
