@@ -141,7 +141,7 @@ with tf.Session(config=gpuConfig) as sess:
             i += 1
             plt.close(fig)
 
-        X_mb = get_batch(mb_size)
+        X_mb = get_batch(mb_size, magnify_interval=True)
         # X_mb = np.reshape(X_mb, [-1, 28, 28, 1])
         _, D_loss_curr = sess.run([D_optimizer, D_loss], feed_dict={X: X_mb, Z: sample_Z(mb_size, Z_dim)})
         _, G_loss_curr = sess.run([G_optimizer, G_loss], feed_dict={Z: sample_Z(mb_size, Z_dim)})
