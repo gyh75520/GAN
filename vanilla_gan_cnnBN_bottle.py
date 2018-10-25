@@ -54,13 +54,13 @@ def discriminator(input, reuse=False, is_training=True):
         # D_conv2 = [batch,16,16,128]
         D_conv3 = slim.conv2d(D_conv2, 64 * 4, [4, 4], 2, padding="SAME", activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
         # D_conv2 = [batch,8,8,256]
-        D_conv3 = slim.conv2d(D_conv3, 64 * 8, [4, 4], 2, padding="SAME", activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
+        D_conv4 = slim.conv2d(D_conv3, 64 * 8, [4, 4], 2, padding="SAME", activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
         # D_conv2 = [batch,4,4,512]
         print('D_conv3', D_conv3)
-        flat_size = D_conv2.shape[1] * D_conv2.shape[2] * D_conv2.shape[3]
-        D_conv2_flat = tf.reshape(D_conv2, [-1, int(flat_size)])
+        flat_size = D_conv4.shape[1] * D_conv4.shape[2] * D_conv4.shape[3]
+        D_conv4_flat = tf.reshape(D_conv4, [-1, int(flat_size)])
         # D_dense1 = slim.fully_connected(D_conv2_flat, 1024, activation_fn=tf.nn.relu, weights_initializer=w_init, normalizer_fn=slim.batch_norm)
-        D_dense2 = slim.fully_connected(D_conv2_flat, 1, activation_fn=None, weights_initializer=w_init, biases_initializer=b_init)
+        D_dense2 = slim.fully_connected(D_conv4_flat, 1, activation_fn=None, weights_initializer=w_init, biases_initializer=b_init)
         # D_dense2 = [batch,1]
         D_logits = D_dense2
         D_prob = tf.nn.sigmoid(D_logits)
