@@ -136,12 +136,14 @@ with tf.Session(config=gpuConfig) as sess:
         if it % 100 == 0:
             samples = sess.run(G_sample, feed_dict={Z: z_show})
             samples = (samples + 1.) / 2.  # inverse transform from [-1,1] to [0,1]
-            fig = plot(samples)
-            plt.savefig(dir_name + '/{}.png'.format(str(i).zfill(3)), bbox_inches='tight')
+            # fig = plot(samples)
+            # plt.savefig(dir_name + '/{}.png'.format(str(i).zfill(3)), bbox_inches='tight')
             i += 1
-            plt.close(fig)
+            # plt.close(fig)
+            from scipy import misc
+            misc.imsave(dir_name + '/{}.png'.format(str(i)), samples[0])
 
-        X_mb = get_batch(mb_size, crop_img=False, magnify_interval=True)
+        X_mb, _ = get_batch(mb_size, crop_img=False, magnify_interval=True)
         # X_mb = np.reshape(X_mb, [-1, 28, 28, 1])
         _, D_loss_curr = sess.run([D_optimizer, D_loss], feed_dict={X: X_mb, Z: sample_Z(mb_size, Z_dim)})
         _, G_loss_curr = sess.run([G_optimizer, G_loss], feed_dict={Z: sample_Z(mb_size, Z_dim)})

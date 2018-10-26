@@ -17,9 +17,8 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 from datas import get_batch
+from utils import save_img
 
 
 def xavier_init(size):
@@ -104,22 +103,6 @@ def discriminator(input, reuse=False):
         return D_logits, D_prob
 
 
-def plot(samples):
-    fig = plt.figure(figsize=(4, 4))
-    gs = gridspec.GridSpec(4, 4)
-    gs.update(wspace=0.05, hspace=0.05)
-
-    for i, sample in enumerate(samples):
-        ax = plt.subplot(gs[i])
-        plt.axis('off')
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
-        ax.set_aspect('equal')
-        plt.imshow(sample)
-
-    return fig
-
-
 G_sample = generator(G_concat(Z, Y))
 D_logits_real, _ = discriminator(D_concat(X, Y))
 D_logits_fake, _ = discriminator(D_concat(G_sample, Y), reuse=True)
@@ -154,23 +137,20 @@ with tf.Session(config=gpuConfig) as sess:
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
-    i = 0
     mb_size = 32
     Z_dim = 100
 
-    z_show = sample_Z(16, Z_dim)
-    y_show = show_Y(16)
+    z_show = sample_Z(3, Z_dim)
+    y_show = show_Y(3)
+
+    magnify_interval = False
 
     for it in range(1000000):
         if it % 100 == 0:
             samples = sess.run(G_sample, feed_dict={Y: y_show, Z: z_show})
-            samples = (samples + 1.) / 2.  # inverse transform from [-1,1] to [0,1]
-            fig = plot(samples)
-            plt.savefig(dir_name + '/{}.png'.format(str(i).zfill(3)), bbox_inches='tight')
-            i += 1
-            plt.close(fig)
+            save_img(dir=dir_name, iter=it, imgs=y_show, boxs=samples, magnify_interval=magnify_interval)
 
-        Y_mb, X_mb = get_batch(mb_size, crop_img=False, magnify_interval=False)
+        Y_mb, X_mb = get_batch(mb_size, crop_img=False, magnify_interval=magnify_interval)
         # X_mb = np.reshape(X_mb, [-1, 28, 28, 1])
         _, D_loss_curr = sess.run([D_optimizer, D_loss], feed_dict={X: X_mb, Y: Y_mb, Z: sample_Z(mb_size, Z_dim)})
         _, G_loss_curr = sess.run([G_optimizer, G_loss], feed_dict={Y: Y_mb, Z: sample_Z(mb_size, Z_dim)})

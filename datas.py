@@ -20,11 +20,16 @@ def _get_img(img_path, crop_img=True, resize=False, magnify_interval=False):
         image = scipy.misc.imresize(image, [64, 64])
 
     image = np.array(image) / 255
+    # print(image)
     if magnify_interval:
         # transform from [0,1] to [-1,1] for generator tanh
         image = image * 2 - 1
 
     return image
+
+
+def _reverse_img(img, crop_img=True, resize=False, magnify_interval=False):
+    return 0
 
 
 def _get_box(xml_path):
@@ -54,7 +59,7 @@ def _get_data_micro():
         boxs = [img.split('.')[0] + '.xml' for img in imgs]
         imgs_adr += imgs
         boxs_adr += boxs
-    print(imgs_adr[1], boxs_adr[1])
+    # print(imgs_adr[1], boxs_adr[1])
     return imgs_adr, boxs_adr
 
 
