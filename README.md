@@ -1,10 +1,13 @@
 What I'm  trying todo is to generate bouding-box(Xmim, Ymin, Xmax, Ymax) rather than picture with GAN like the following picture.
 
+<table><tr>
+<td><img src=assets/markdown-img-paste-2018103014241306.png border=0><div align="center">input</div> </td>
+<td><img src=assets/markdown-img-paste-20181030142502881.png border=0><div align="center">output</div></td>
+</tr></table>
 All have been tested with python3.6+ and tensorflow1.1+ in linux and OS X.
 
 The beginning.
-##### GAN
---------
+### GAN
 In GAN, the first net is called Generator Net
 G(Z) and the second net called Discriminator Net D(X).
 
@@ -12,8 +15,7 @@ The first net generates data, and the second net tries to tell the difference be
 
 **the objective function:** $min$
 ***************
-##### DCGAN
---------
+### DCGAN
 **stabilize the training with some architectural constraints.**\
 GAN is hard to train.\
 Stabilize Generative Adversarial networks with some architectural constraints.\
@@ -36,7 +38,7 @@ The Architecture:
 Results:
 
 ***************
-##### Conditional GAN
+### Conditional GAN
 **Apply GAN by adding condition(supervised)**
 
 we want to condition those networks with some vector
