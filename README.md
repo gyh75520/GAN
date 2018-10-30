@@ -1,3 +1,4 @@
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 What I'm  trying to do is to generate bouding-box(Xmim, Ymin, Xmax, Ymax) rather than image with GAN like the following image.
 
 <table><tr>
@@ -58,7 +59,7 @@ Now, the objective function is given by:
 $$\min \limits_G \max \limits_D V(D,G) = E_{x \sim p_{data}(x,y)}[logD(x)] + E_{z \sim p_{z}(z)}(1-logD(G(z,y),y))$$
 
 Use Condition GAN to generate new data samples with certain label
-in mnist.
+in mnist datasets.
 
 the Architecture is:
 
