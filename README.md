@@ -1,4 +1,3 @@
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 What I'm  trying to do is to generate bouding-box(Xmim, Ymin, Xmax, Ymax) rather than image with GAN like the following image.
 
 <table><tr>
