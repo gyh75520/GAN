@@ -30,7 +30,7 @@ def save_img(dir, iter, imgs, boxs=None, magnify_interval=False):
     if magnify_interval:
         imgs = (imgs + 1.) / 2.  # inverse transform from [-1,1] to [0,1]
 
-    if boxs:
+    if boxs is not None:
         j = 0
         for img, box in zip(imgs, boxs):
             img = img * 255
@@ -39,7 +39,7 @@ def save_img(dir, iter, imgs, boxs=None, magnify_interval=False):
             width = 640
             height = 480
             img = img.copy()
-            print(box)
+            # print(box)
             for i in range(len(box) // 4):
                 xmin = int(box[0 + i * 4] * width)
                 ymin = int(box[1 + i * 4] * height)
@@ -73,3 +73,4 @@ if __name__ == '__main__':
     # cv2.imwrite('001_cv.png', img)
 
     save_img('test', 1, imgs_batch, box_batch)
+    save_img('test', 2, imgs_batch)
